@@ -35,6 +35,7 @@ Instagram Growth Hacker allows users to post content on their instagram account 
     - One Campaign
     - Unlimited Campaigns
 - Ability to add multiple type of sources (JSON/RSS)
+- Make quotes as quotes pic and publish
 
 ## Authors
 
