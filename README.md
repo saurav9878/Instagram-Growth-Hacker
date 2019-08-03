@@ -21,7 +21,7 @@ Instagram Growth Hacker allows users to post content on their instagram account 
 ### Functional Requirements
 
 - Instagram login
-- Scrapper to scrap new posts from source
+- JSON Scrapper to scrap new posts from source
 - Each campaign contain sources and insta account list
 - Set maximum posts published per day per account
 - Choose Post type: Select content (photo/video) from the given sources
@@ -34,6 +34,7 @@ Instagram Growth Hacker allows users to post content on their instagram account 
 - Two Subscriptions
     - One Campaign
     - Unlimited Campaigns
+- Ability to add multiple type of sources (JSON/RSS)
 
 ## Authors
 
