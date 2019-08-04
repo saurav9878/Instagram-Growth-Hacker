@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
 def create_app(test_config=None):
@@ -19,6 +19,15 @@ def create_app(test_config=None):
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
     mysql = MySQL(app)
 
+
+    #######################################
+    # CREATE
+    #######################################
+
+
+    #######################################
+    # READ
+    #######################################
     def get_user_data(username):
         cur = mysql.connection.cursor()
         # Assuming the table name is USERS
@@ -46,6 +55,31 @@ def create_app(test_config=None):
             hash_tags.append(user_data[i]['hash_tags'])
         return hash_tags
 
+
+    #######################################
+    # UPDATE
+    #######################################
+    def update_name(username,name):
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE USERS SET name='" + name + "' WHERE username='" + username + "';")    
+        mysql.connection.commit()
+
+    def update_max_posts(username, max_posts):
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE USERS SET max_posts='" + max_posts + "' WHERE username='" + username + "';")    
+        mysql.connection.commit()
+
+
+    #######################################
+    # DELETE
+    #######################################
+
+
+
+    #######################################
+    # UPDATE
+    #######################################
+
     @app.route('/dashboard')
     def index():
         username = request.args.get('username')
@@ -55,10 +89,19 @@ def create_app(test_config=None):
         print(user_data)
         return render_template('dashboard.html', user_data=user_data)
 
-    @app.route('/add_user_param')
-    def add_param():
+    @app.route('/edit_profile', methods=['POST'])
+    def edit_profile():
         username = request.form.get('username')
-        
+        max_posts = request.form.get('max_posts')
+        print(username)
+        name = request.form.get('name')
+        # hashtags = request.form.get('hashtags')
+        # insta_ids = request.form.get('insta_ids')
+        update_name(username, name)
+        update_max_posts(username, max_posts)
+        # update_hashtags(username, hashtags)
+        # update_insta_ids(username, insta_ids)
+        return redirect(url_for('index', username=username)), 200
 
     # simply return the app
     return app
