@@ -2,6 +2,18 @@
     <body>
         <h1>Instagram Growth Hacker</h1>
         <h2>Dashboard</h2>
-        Welcome, {{name}}
+        Welcome, {{user_data['name']}}
+        <br>
+        <h3>My Profile</h3>
+        Username: {{user_data['username']}}<br>
+        Name: {{user_data['name']}}<br>
+        Max Posts: {{user_data['max_posts']}}<br>
+        Hash Tags: {% for hashtag in user_data['hash_tags'] %}
+                    {{hashtag}}
+                    {%endfor%}
+        <br>
+        Insta IDs connected: {% for id in user_data['insta_ids'] %}
+                                {{id}}
+                                {%endfor%}
     </body>
 </html>

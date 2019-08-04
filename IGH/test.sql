@@ -16,6 +16,52 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `HASHTAGS`
+--
+
+DROP TABLE IF EXISTS `HASHTAGS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `HASHTAGS` (
+  `username` varchar(20) DEFAULT NULL,
+  `hash_tags` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `HASHTAGS`
+--
+
+LOCK TABLES `HASHTAGS` WRITE;
+/*!40000 ALTER TABLE `HASHTAGS` DISABLE KEYS */;
+INSERT INTO `HASHTAGS` VALUES ('saurav9878','food'),('saurav9878','travel'),('saurav9878','music'),('aakashd','photography'),('aakashd','cooking'),('aakashd','reading');
+/*!40000 ALTER TABLE `HASHTAGS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `INSTA_IDS`
+--
+
+DROP TABLE IF EXISTS `INSTA_IDS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `INSTA_IDS` (
+  `username` varchar(20) DEFAULT NULL,
+  `insta_ids` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `INSTA_IDS`
+--
+
+LOCK TABLES `INSTA_IDS` WRITE;
+/*!40000 ALTER TABLE `INSTA_IDS` DISABLE KEYS */;
+INSERT INTO `INSTA_IDS` VALUES ('saurav9878','suraev2'),('saurav9878','suraev'),('aakashd','akdeep'),('aakashd','akdeep2');
+/*!40000 ALTER TABLE `INSTA_IDS` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `USERS`
 --
 
@@ -23,9 +69,10 @@ DROP TABLE IF EXISTS `USERS`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `USERS` (
-  `USERNAME` varchar(20) NOT NULL,
-  `NAME` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`USERNAME`)
+  `username` varchar(20) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `max_posts` int(11) DEFAULT NULL,
+  PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -35,7 +82,7 @@ CREATE TABLE `USERS` (
 
 LOCK TABLES `USERS` WRITE;
 /*!40000 ALTER TABLE `USERS` DISABLE KEYS */;
-INSERT INTO `USERS` VALUES ('aakashd','Aakash Deep'),('saurav9878','Saurav Kumar');
+INSERT INTO `USERS` VALUES ('aakashd','Aakash Deep',3),('saurav9878','Saurav Kumar',5);
 /*!40000 ALTER TABLE `USERS` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +95,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-04 22:56:04
+-- Dump completed on 2019-08-05  4:12:19
