@@ -12,19 +12,20 @@
                     {{hashtag}}
                     {%endfor%}
         <br>
-        Insta IDs connected: {% for id in user_data['insta_ids'] %}
+        Insta IDs: {% for id in user_data['insta_ids'] %}
                                 {{id}}
                                 {%endfor%}
-        
+                                <br>
+        Post Type (0 for image, 1 for video): {{user_data['post_type']}}
         <h3> Edit Profile</h3>
         <form action="/edit_profile" method="POST">
                 <input type='hidden' name='username' value="{{user_data['username']}}">
             <label>
-                Name: <input type='text' name='name'> <br>
-                Max Posts: <input type="number" name="max_posts"> <br>
-                <!-- Hash Tags (Comma separated): <input type="text" name="hashtags"> <br>
-                Insta IDs (Comma separated): <input type="text" name="insta_ids"> <br> -->
-
+                Name: <input type='text' name='name' value="{{user_data['name']}}"> <br>
+                Max Posts: <input type="number" name="max_posts" value="{{user_data['max_posts']}}"> <br>
+                Hash Tags (Comma separated): <input type="text" name="hash_tags" value="{{user_data['hash_tags']}}"> <br>
+                Insta IDs (Comma separated): <input type="text" name="insta_ids" value="{{user_data['insta_ids']}}"> <br>
+                Post Type: <input type="number" name="post_type" value="{{user_data['post_type']}}"> <br>
              </label>
              <button>Update</button>
         </form>

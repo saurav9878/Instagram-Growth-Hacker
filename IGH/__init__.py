@@ -1,4 +1,4 @@
-import os
+import os, json
 from flask import Flask, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
 
@@ -15,65 +15,88 @@ def create_app(test_config=None):
     app.config['MYSQL_HOST'] = '127.0.0.1'
     app.config['MYSQL_USER'] = 'root'
     app.config['MYSQL_PASSWORD'] = 'root'
-    app.config['MYSQL_DB'] = 'test'
+    app.config['MYSQL_DB'] = 'IGH_users'
     app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
     mysql = MySQL(app)
 
 
     #######################################
-    # CREATE
+    #TODO: CREATE
     #######################################
+    def insert_hashtags(username, hash_tags):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT hash_tags FROM user_info WHERE username='" + username +"'")
+        fetched = cur.fetchone()
+        fetched_list = json.loads(fetched['hash_tags'])
+        updated_hashtags = fetched_list + hash_tags
+        update_hashtags(username, updated_hashtags)
+    
+    def insert_insta_ids(username, insta_ids):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT insta_ids FROM user_info WHERE username='" + username +"'")
+        fetched = cur.fetchone()
+        fetched_list = json.loads(fetched['insta_ids'])
+        updated_insta_ids = fetched_list + insta_ids
+        update_insta_ids(username, updated_insta_ids)
 
+    def insert_sources(username, sources):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT sources FROM user_info WHERE username='" + username +"'")
+        fetched = cur.fetchone()
+        fetched_list = json.loads(fetched['sources'])
+        updated_sources = fetched_list + sources
+        update_sources(username, updated_sources)
 
     #######################################
-    # READ
+    #TODO: READ
     #######################################
     def get_user_data(username):
+        '''Fetch all user data except login password'''
         cur = mysql.connection.cursor()
-        # Assuming the table name is USERS
-        # Put Non-lists data in USERS
-        cur.execute("SELECT * FROM USERS WHERE USERNAME='" + username +"'")
+        cur.execute("SELECT * FROM user_info WHERE username='" + username +"'")
         user_data = cur.fetchone()
+        user_data['hash_tags'] = json.loads(user_data['hash_tags'])
+        user_data['insta_ids'] = json.loads(user_data['insta_ids'])
         return user_data
-
-    def get_insta_ids(username):
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT insta_ids FROM INSTA_IDS WHERE USERNAME='" + username +"'")
-        user_data = cur.fetchall()
-        insta_ids = []
-        for i in range(len(user_data)):
-            insta_ids.append(user_data[i]['insta_ids'])
-        return insta_ids
-
-
-    def get_hashtags(username):
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT hash_tags FROM HASHTAGS WHERE USERNAME='" + username +"'")
-        user_data = cur.fetchall()
-        hash_tags = []
-        for i in range(len(user_data)):
-            hash_tags.append(user_data[i]['hash_tags'])
-        return hash_tags
 
 
     #######################################
     # UPDATE
     #######################################
-    def update_name(username,name):
+    def update_name(username, name):
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE USERS SET name='" + name + "' WHERE username='" + username + "';")    
+        cur.execute("UPDATE user_info SET name='" + name + "' WHERE username='" + username + "';")    
         mysql.connection.commit()
 
     def update_max_posts(username, max_posts):
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE USERS SET max_posts='" + max_posts + "' WHERE username='" + username + "';")    
+        cur.execute("UPDATE user_info SET max_posts='" + max_posts + "' WHERE username='" + username + "';")    
         mysql.connection.commit()
 
+    def update_hashtags(username, hash_tags):
+        cur = mysql.connection.cursor()
+        # print(json.dumps(hash_tags))
+        cur.execute("UPDATE user_info SET hash_tags='" + json.dumps(hash_tags) + "' WHERE username='" + username + "';")
+        mysql.connection.commit()
+
+    def update_insta_ids(username, insta_ids):
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE user_info SET insta_ids='" + json.dumps(insta_ids) + "' WHERE username='" + username + "';")
+        mysql.connection.commit()
+
+    def update_sources(username, sources):
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE user_info SET sources='" + sources + "' WHERE username='" + username + "';")
+        mysql.connection.commit()
+
+    def update_post_type(username, post_type):
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE user_info SET post_type='" + post_type + "' WHERE username='" + username + "';")
+        mysql.connection.commit()
 
     #######################################
-    # DELETE
+    #TODO: DELETE
     #######################################
-
 
 
     #######################################
@@ -84,24 +107,29 @@ def create_app(test_config=None):
     def index():
         username = request.args.get('username')
         user_data = get_user_data(username)
-        user_data['insta_ids'] = get_insta_ids(username)
-        user_data['hash_tags'] = get_hashtags(username)
-        print(user_data)
+        # print(user_data)
+        # insert_hashtags(username,['su','du'])
         return render_template('dashboard.html', user_data=user_data)
 
     @app.route('/edit_profile', methods=['POST'])
     def edit_profile():
         username = request.form.get('username')
+        post_type = request.form.get('post_type')
         max_posts = request.form.get('max_posts')
-        print(username)
         name = request.form.get('name')
-        # hashtags = request.form.get('hashtags')
-        # insta_ids = request.form.get('insta_ids')
+        hashtags = request.form.get('hash_tags')
+        insta_ids = request.form.get('insta_ids')
+       
+        hashtags_list = json.loads(hashtags.replace("'",'"'))
+        insta_ids_list = json.loads(insta_ids.replace("'",'"'))
+
         update_name(username, name)
         update_max_posts(username, max_posts)
-        # update_hashtags(username, hashtags)
-        # update_insta_ids(username, insta_ids)
-        return redirect(url_for('index', username=username)), 200
+        update_hashtags(username, hashtags_list)
+        update_insta_ids(username, insta_ids_list)
+        update_post_type(username, post_type)
+        
+        return redirect(url_for('index', username=username))
 
     # simply return the app
     return app
