@@ -40,7 +40,6 @@ Instagram Growth Hacker allows users to post content on their instagram account 
 ## Authors
 
 - Saurav Kumar
-- Aakash Deep
 
 ## License
 
