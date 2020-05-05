@@ -2,6 +2,8 @@
 
 Instagram Growth Hacker allows users to post content on their instagram account completely automated by taking content from other sites(specified sources by user). (Same like IFTTT.com) Example: Let's say I give a source url - https://www.reddit.com/r/programmerhumor/hot/.json The tool will check for new posts on this json from time to time and if it founds new post in this subreddit it will automatically post it on our instagram account.
 
+**Note: Head over to https://github.com/saurav9878/IGH-Frontend for the frontend part of IGH**
+
 ## Key Callouts / Assumptions
 
 
